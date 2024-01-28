@@ -16,7 +16,7 @@ class Grid():
         Number of columns in the grid
     state: list[list[int]]
         The state of the grid, a list of list such that state[i][j] is the number in the cell (i, j), i.e., in the i-th line and j-th column. 
-        Note: lines are numbered 0..m and columns are numbered 0..n.
+        Not: lines are numbered 0..m and columns are numbered 0..n.
     """
     
     def __init__(self, m, n, initial_state = []):
