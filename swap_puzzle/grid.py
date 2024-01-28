@@ -16,7 +16,7 @@ class Grid():
         Number of columns in the grid
     state: list[list[int]]
         The state of the grid, a list of list such that state[i][j] is the number in the cell (i, j), i.e., in the i-th line and j-th column. 
-        Not: lines are numbered 0..m and columns are numbered 0..n.
+        Note: lines are numbered 0..m and columns are numbered 0..n.
     """
     
     def __init__(self, m, n, initial_state = []):
@@ -57,8 +57,7 @@ class Grid():
         """
         Checks is the current state of the grid is sorte and returns the answer as a boolean.
         """
-        # TODO: implement this function (and remove the line "raise NotImplementedError").
-        raise NotImplementedError
+        return (self.state==[list(range(i*self.n+1, (i+1)*self.n+1)) for i in range(self.m)])
 
     def swap(self, cell1, cell2):
         """
@@ -69,8 +68,12 @@ class Grid():
         cell1, cell2: tuple[int]
             The two cells to swap. They must be in the format (i, j) where i is the line and j the column number of the cell. 
         """
-        # TODO: implement this function (and remove the line "raise NotImplementedError").
-        raise NotImplementedError
+        if abs(cell1[0]-cell2[0])+ abs(cell1[1]-cell2[1]) > 1:
+            raise ValueError("cells are not swappable")
+        else:
+            A=self.state[cell1[0]][cell1[1]]
+            self.state[cell1[0]][cell1[1]]=self.state[cell2[0]][cell2[1]]
+            self.state[cell2[0]][cell2[1]]=A
 
     def swap_seq(self, cell_pair_list):
         """
@@ -82,8 +85,8 @@ class Grid():
             List of swaps, each swap being a tuple of two cells (each cell being a tuple of integers). 
             So the format should be [((i1, j1), (i2, j2)), ((i1', j1'), (i2', j2')), ...].
         """
-        # TODO: implement this function (and remove the line "raise NotImplementedError").
-        raise NotImplementedError
+        for i in range(len(cell_pair_list)):
+            self.swap(cell_pair_list[i][0],cell_pair_list[i][1])
 
     @classmethod
     def grid_from_file(cls, file_name): 
