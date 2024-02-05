@@ -97,8 +97,21 @@ class Graph:
         path: list[NodeType] | None
             The shortest path from src to dst. Returns None if dst is not reachable from src
         """ 
-        # TODO: implement this function (and remove the line "raise NotImplementedError").
-        raise NotImplementedError
+        # Initialisation de la file avec le nœud source et le chemin initial contenant uniquement le nœud source
+        queue = [(src, [src])]
+        # Boucle principale
+        while queue:
+            # Retire le premier élément de la file (nœud actuel et chemin associé)
+            current_node, path = queue.pop(0)
+            # Vérifie si le nœud actuel est la destination:
+            if current_node == dst:            
+                return path # Retourne le premier chemin trouvé (le plus court)                       
+             # Explore les voisins du nœud actuel:            
+            for neighbor in self.graph[current_node]:            
+            # Vérifie si le voisin n'est pas déjà présent dans le chemin           
+                if neighbor not in path:           
+                 # Ajoute le voisin à la file avec le chemin mis à jour          
+                    queue.append((neighbor, path + [neighbor]))
 
     @classmethod
     def graph_from_file(cls, file_name):
