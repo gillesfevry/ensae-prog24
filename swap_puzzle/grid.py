@@ -1,8 +1,10 @@
 """
 This is the grid module. It contains the Grid class and its associated methods.
 """
-
+import math
+import itertools
 import random
+from graph import Graph
 
 class Grid():
     """
@@ -53,6 +55,18 @@ class Grid():
         """
         return f"<grid.Grid: m={self.m}, n={self.n}>"
 
+    def __hash__(self):
+        """
+        Makes the puzzle hashable using its state
+        """
+        return hash(str(self.state))
+
+    def __eq__(self, other):
+        """
+        permits testing A==B using A and B states
+        """
+        return self.state==other.state
+
     def is_sorted(self):
         """
         Checks is the current state of the grid is sorte and returns the answer as a boolean.
@@ -87,6 +101,53 @@ class Grid():
         """
         for i in range(len(cell_pair_list)):
             self.swap(cell_pair_list[i][0],cell_pair_list[i][1])
+    
+    def other_states(self):
+        """
+        crée un vecteur dont chaque coordonnée est un état possible du puzzle de même taille
+        """
+        V = [i+1 for i in range(self.m * self.n)]
+        permutations = list(itertools.permutations(V))
+        States = []
+        m = self.m
+        n = self.n
+        for k in range(math.factorial(m*n)):
+            NewGrid = Grid(m, n, [[permutations[k][i*n + j] for j in range(n)]for i in range(m)])
+            States = States + [NewGrid]
+        return (States)
+    
+    def can_be_swapped(self,B):
+        """
+        vérifie si deux états sont à distance d'un swap ou non
+        """
+        if self==B:
+            return True
+        assert(self.m==B.m and self.n==B.n)
+        u=[]
+        for i in range(self.m):
+            for j in range(self.n):
+                if self.state[i][j] != B.state[i][j]:
+                    u=u+[(i,j)]
+        if len(u)>2:
+            return False
+        else:
+            if abs(u[0][0]-u[1][0])+ abs(u[0][1]-u[1][1]) == 1:
+                return True
+            else:
+                return False
+    
+    def GridGraph(self):
+        """
+        Crée un graph ou les sommets sont tous les swap puzzles possibles et dans 
+        lequel les sommets sont reliés si et seulement si ils sont échangeables
+        """
+        G= Graph()
+        U=self.other_states()
+        for i in range(len(U)):
+            for j in range(len(U)):
+                if j > i and U[i].can_be_swapped(U[j]):
+                    G.add_edge(U[i],U[j])
+        return(G)
 
     @classmethod
     def grid_from_file(cls, file_name): 
@@ -115,5 +176,3 @@ class Grid():
                 initial_state[i_line] = line_state
             grid = Grid(m, n, initial_state)
         return grid
-
-

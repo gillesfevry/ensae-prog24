@@ -22,7 +22,7 @@ class Solver():
         """
         return ((x-1)//A.n, (x-1) % A.n)
 
-    def get_solution(self, A):
+    def naif(self, A):
         """
         Solves the grid and returns the sequence of swaps at the format 
         [((i1, j1), (i2, j2)), ((i1', j1'), (i2', j2')), ...]. 
@@ -44,8 +44,3 @@ class Solver():
             A.swap_seq(u)
             v=v+u
         return(v)
-
-B=Grid(2,3,[[6,3,4],[1,2,5]])
-C=Solver()
-sol=C.get_solution(B)
-print(sol)
