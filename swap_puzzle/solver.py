@@ -4,7 +4,7 @@ class Solver():
     """
     A solver class, to be implemented.
     """
-    def trouve_pos_init(self, A,x):
+    def trouve_pos_init(self, A, x):
         """
         Trouve le nombre dans la grille et renvoie sa position
         """
@@ -16,7 +16,7 @@ class Solver():
                 break
         return (i0,j0)
     
-    def trouve_pos_finale(self, A,x):
+    def trouve_pos_finale(self, A, x):
         """
         Trouve la position finale du nombre dans la grille et renvoie les coordonnées de sa position finale
         """

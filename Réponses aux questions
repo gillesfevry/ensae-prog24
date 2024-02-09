@@ -1,0 +1,56 @@
+Question 2:
+
+Les méthodes peuvent être testées grâce à:
+    test_is_sorted
+    test_swap
+
+Question 3:
+
+La méthode naive de solver s'appelle "naif".
+Elle fait appel à deux méthodes qui permettent de trouver un numéro dans la grille, 
+    ainsi que sa place finale ("trouve_pos_init" et "trouve_pos_finale)
+La méthode effectue dans le pire des cas moins de n*m*((n+m-2) swaps, pour une Grid(m,n).
+    Cela vient du fait qu'il faut déplacer m*n cases au maximum n-1 fois horizontalement et m-1 fois verticalement.
+La coût est de O((n*m)**2) opérations.
+    En effet, pour chaque case, il faut  à chaque fois retrouver où elle se trouve dans la grille. 
+    (Le reste des opérations a un moindre coût.)
+La méthode n'est pas optimale: à titres d'exemple [[2,3],[4,1]] se résout en 5 étapes avec naif, 
+    alors qu'il peut se résoudre en trois étapes.
+Peut importe la situation de départ, la méthode naive fonctionne, 
+    puisqu'elle fait bien attention à ne pas toucher aux cases précédemment placées
+
+Question 4:
+
+La méthode Graphic_rep fait apparaitre une magnifique représentation graphique de la grille.
+(Sur nos ordinateurs elle marche en lançant le code sur une nouvelle fenetre nterractive).
+
+Question 5:
+
+La méthode bfs peut-être testée avec test_pathout
+
+Question 6:
+
+Pour rendre hashable les noeuds, nous définissons les méthodes __hash__ et __eq__ dans grid,
+    en utilisant comme égalité entre les grilles, leur état
+
+Nous implemmentons trois nouvelles méthodes dans Grid:
+    1) other_sates détermine toutes les grilles possibles pour un puzzle de meme taille en passant par les combinaisons
+    2) can_be_swapped vérifie si une grille peut s'obtenir en un seul swap depuis l'autre 
+    3) GridGraph crée un graph dont les noeuds sont les états possibles de la grille 
+        et les arrêtes correspondent à la swapabilité des sommets
+
+Question 7:
+
+L'algorithme parvient à obtenir le plus court chemin et est donc plus efficace que naif en ce sens.
+En revanche la construction du graphe a un coût extrêmement élevé: O((m*n)!)*(m*n-1)!). 
+    En effet, le graph est constitué de (m*n)! noeuds. Il faut ensuite regarder chaque combinaison de 2 noeuds.
+    et 2 parmi (m*n)! est O((m*n)!(m*n-1)!).
+L'algorithme ne traite donc "rapidement" que les grilles de 6 cases ou moins.
+
+Question 8:
+
+On adapte donc bfs pour la grille en faisant en sorte de charger à chaque fois 
+    la liste des grilles accessibles depuis la positiion actuelle.
+On utilise pour cela la méthode Reachable_states.
+On obtient donc une méthode bfs_grid qui est moins couteuse que la construction d'un graphe. 
+En particulier, elle résout rapidement des problèmes simples pour des graphes à plus de 6 cases. 

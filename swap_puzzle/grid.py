@@ -6,6 +6,7 @@ import itertools
 import random
 from graph import Graph
 from copy import deepcopy
+import matplotlib.pyplot as plt
 
 class Grid():
     """
@@ -102,6 +103,18 @@ class Grid():
         """
         for i in range(len(cell_pair_list)):
             self.swap(cell_pair_list[i][0],cell_pair_list[i][1])
+
+    def Graphic_rep(self):
+        for i in range(len(self.state)):
+        
+            for j in range(len(self.state[0])):
+        
+                plt.text(j,len(self.state)-i,str(self.state[i][j]),fontsize=20,color='b')
+        
+        plt.xlim([0,len(self.state)+1])
+        plt.ylim([0,len(self.state[0])+1])
+        plt.grid(color='black', linestyle='--', linewidth=1.0)
+        plt.show()
     
     def other_states(self):
         """
