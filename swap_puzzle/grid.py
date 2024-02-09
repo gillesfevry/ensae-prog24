@@ -5,6 +5,7 @@ import math
 import itertools
 import random
 from graph import Graph
+from copy import deepcopy
 
 class Grid():
     """
@@ -141,13 +142,47 @@ class Grid():
         Crée un graph ou les sommets sont tous les swap puzzles possibles et dans 
         lequel les sommets sont reliés si et seulement si ils sont échangeables
         """
-        G= Graph()
-        U=self.other_states()
+        G = Graph()
+        U =self.other_states()
         for i in range(len(U)):
             for j in range(len(U)):
                 if j > i and U[i].can_be_swapped(U[j]):
                     G.add_edge(U[i],U[j])
         return(G)
+    
+    def Reachable_states(self):
+        U=[]
+        for i in range(self.m):
+            for j in range(self.n -1):
+                self.swap((i,j),(i,j+1))
+                B=Grid(self.m, self.n, deepcopy(self.state))
+                U=U+ [B]
+                self.swap((i,j),(i,j+1))
+        for j in range(self.n):
+            for i in range(self.m - 1):
+                self.swap((i,j),(i+1,j))
+                B=Grid(self.m, self.n, deepcopy(self.state))
+                U=U+ [B]
+                self.swap((i,j),(i+1,j))
+        return(U)
+
+    def bfs_grid(self):
+        dst=Grid(self.m,self.n)
+        # Initialisation de la file avec le nœud source et le chemin initial contenant uniquement le nœud source
+        queue = [(self, [self])]
+        # Boucle principale
+        while queue:
+            # Retire le premier élément de la file (nœud actuel et chemin associé)
+            current_node, path = queue.pop(0)
+            # Vérifie si le nœud actuel est la destination:
+            if current_node == dst:            
+                return path # Retourne le premier chemin trouvé (le plus court)                       
+                # Explore les voisins du nœud actuel:            
+            for neighbor in current_node.Reachable_states():            
+            # Vérifie si le voisin n'est pas déjà présent dans le chemin           
+                if neighbor not in path:           
+                    # Ajoute le voisin à la file avec le chemin mis à jour          
+                    queue.append((neighbor, path + [neighbor]))
 
     @classmethod
     def grid_from_file(cls, file_name): 
