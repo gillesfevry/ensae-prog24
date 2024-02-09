@@ -1,8 +1,6 @@
 from grid import Grid
 from graph import Graph 
-
-g = Grid(2, 3)
-print(g)
+from solver import Solver
 
 #data_path = "../input/"
 #file_name = data_path + "grid0.in"

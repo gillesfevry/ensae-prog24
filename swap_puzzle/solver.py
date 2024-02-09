@@ -22,6 +22,19 @@ class Solver():
         """
         return ((x-1)//A.n, (x-1) % A.n)
 
+    def convertisseur(self,X):
+        """
+        Transforme une liste de swap puzlles (swappables de proche en proche) en liste des swaps à effectuer
+        """
+        v=[]
+        for i in range(len(X)-1):
+            for w in range(X[0].m*X[0].n):
+                a, b = self.trouve_pos_init(X[i], w+1), self.trouve_pos_init(X[i+1], w+1)
+                if a != b:
+                    v=v+[(a,b)]
+                    break
+        return(v)
+
     def naif(self, A):
         """
         Solves the grid and returns the sequence of swaps at the format 
@@ -43,4 +56,28 @@ class Solver():
                     u=u+[((deb[0] - k, fin[1]), (deb[0]-k-1, fin[1]))]
             A.swap_seq(u)
             v=v+u
+        A.swap_seq(list(reversed(v)))
         return(v)
+
+    def bfs_graph(self,A):
+        G=A.GridGraph()
+        dst=Grid(A.m,A.n)
+        return(G.bfs(A,dst))
+
+    def bfs_grid(self,A):
+        dst=Grid(A.m,A.n)
+        # Initialisation de la file avec le nœud source et le chemin initial contenant uniquement le nœud source
+        queue = [(A, [A])]
+        # Boucle principale
+        while queue:
+            # Retire le premier élément de la file (nœud actuel et chemin associé)
+            current_node, path = queue.pop(0)
+            # Vérifie si le nœud actuel est la destination:
+            if current_node == dst:            
+                return path # Retourne le premier chemin trouvé (le plus court)                       
+                # Explore les voisins du nœud actuel:            
+            for neighbor in current_node.Reachable_states():            
+            # Vérifie si le voisin n'est pas déjà présent dans le chemin           
+                if neighbor not in path:           
+                    # Ajoute le voisin à la file avec le chemin mis à jour          
+                    queue.append((neighbor, path + [neighbor]))

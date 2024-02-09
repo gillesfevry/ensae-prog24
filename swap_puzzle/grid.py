@@ -179,24 +179,6 @@ class Grid():
                 self.swap((i,j),(i+1,j))
         return(U)
 
-    def bfs_grid(self):
-        dst=Grid(self.m,self.n)
-        # Initialisation de la file avec le nœud source et le chemin initial contenant uniquement le nœud source
-        queue = [(self, [self])]
-        # Boucle principale
-        while queue:
-            # Retire le premier élément de la file (nœud actuel et chemin associé)
-            current_node, path = queue.pop(0)
-            # Vérifie si le nœud actuel est la destination:
-            if current_node == dst:            
-                return path # Retourne le premier chemin trouvé (le plus court)                       
-                # Explore les voisins du nœud actuel:            
-            for neighbor in current_node.Reachable_states():            
-            # Vérifie si le voisin n'est pas déjà présent dans le chemin           
-                if neighbor not in path:           
-                    # Ajoute le voisin à la file avec le chemin mis à jour          
-                    queue.append((neighbor, path + [neighbor]))
-
     @classmethod
     def grid_from_file(cls, file_name): 
         """
