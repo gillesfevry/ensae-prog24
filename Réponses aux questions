@@ -47,7 +47,8 @@ On code l'algorithme bfs_graph dans solver qui renvoie le résultat sous le mêm
 L'algorithme parvient à obtenir le plus court chemin et est donc plus efficace que naif en ce sens.
 En revanche la construction du graphe a un coût extrêmement élevé: O((m*n)!)*(m*n-1)!). 
     En effet, le graph est constitué de (m*n)! noeuds. Il faut ensuite regarder chaque combinaison de 2 noeuds.
-    et 2 parmi (m*n)! est O((m*n)!(m*n-1)!).
+    et 2 parmi (m*n)! est O((m*n)!(m*n-1)!) pour constituer les eventuelles arrêtes. 
+    (En tout, seulement (n-1)*m + (m-1)*n arrêtes seront constitués (horizontales + verticales))
 L'algorithme ne traite donc "rapidement" que les grilles de 6 cases ou moins.
 On peut tester l'algorithme avec test_solvers.
 
