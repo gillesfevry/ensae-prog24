@@ -97,20 +97,19 @@ class Graph:
         path: list[NodeType] | None
             The shortest path from src to dst. Returns None if dst is not reachable from src
         """ 
-        # Initialisation de la file avec le nœud source et le chemin initial contenant uniquement le nœud source
+        # initiates the queue with the source node and the initial path(only the first node).
         queue = [(src, [src])]
-        # Boucle principale
         while queue:
-            # Retire le premier élément de la file (nœud actuel et chemin associé)
+            # Deletes the first element of the queue (node and associated path)
             current_node, path = queue.pop(0)
-            # Vérifie si le nœud actuel est la destination:
-            if current_node == dst:            
-                return path # Retourne le premier chemin trouvé (le plus court)                       
-             # Explore les voisins du nœud actuel:            
-            for neighbor in self.graph[current_node]:            
-            # Vérifie si le voisin n'est pas déjà présent dans le chemin           
-                if neighbor not in path:           
-                 # Ajoute le voisin à la file avec le chemin mis à jour          
+            # Checks if the node is the final destination:
+            if current_node == dst:
+                return path # Returns the first path found (which is the shortest)
+             # Explore all neighbor nodes
+            for neighbor in self.graph[current_node]:
+            # Checks if the neighbor is not already in the path
+                if neighbor not in path:
+                 # Adds the neighbor to the queue with the actualized path
                     queue.append((neighbor, path + [neighbor]))
 
     @classmethod

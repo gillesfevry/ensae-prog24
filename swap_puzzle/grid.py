@@ -65,13 +65,13 @@ class Grid():
 
     def __eq__(self, other):
         """
-        permits testing A==B using A and B states
+        Permits testing A==B using A and B states as equality criterion.
         """
         return self.state==other.state
 
     def is_sorted(self):
         """
-        Checks is the current state of the grid is sorte and returns the answer as a boolean.
+        Checks if the current state of the grid is sorted and returns the answer as a boolean.
         """
         return (self.state==[list(range(i*self.n+1, (i+1)*self.n+1)) for i in range(self.m)])
 
@@ -84,6 +84,7 @@ class Grid():
         cell1, cell2: tuple[int]
             The two cells to swap. They must be in the format (i, j) where i is the line and j the column number of the cell. 
         """
+        #we check that cells can be swapped
         if abs(cell1[0]-cell2[0])+ abs(cell1[1]-cell2[1]) > 1:
             raise ValueError("cells are not swappable")
         else:
@@ -105,6 +106,9 @@ class Grid():
             self.swap(cell_pair_list[i][0],cell_pair_list[i][1])
 
     def Graphic_rep(self):
+        """
+        Creates a graphic representation of a Grid. 
+        """
         for i in range(len(self.state)):
         
             for j in range(len(self.state[0])):
@@ -118,13 +122,16 @@ class Grid():
     
     def other_states(self):
         """
-        crée un vecteur dont chaque coordonnée est un état possible du puzzle de même taille
+        Returns a list of every state possible for the given grid's size.
         """
-        V = [i+1 for i in range(self.m * self.n)]
+        #we create a liste of our numbers
+        V = [i + 1 for i in range(self.m * self.n)]
+        #we establish all the possible permutations
         permutations = list(itertools.permutations(V))
         States = []
         m = self.m
         n = self.n
+        #we apply those permutations to our numbers in order to obtain all the possible states of the grid
         for k in range(math.factorial(m*n)):
             NewGrid = Grid(m, n, [[permutations[k][i*n + j] for j in range(n)]for i in range(m)])
             States = States + [NewGrid]
@@ -132,18 +139,31 @@ class Grid():
     
     def can_be_swapped(self,B):
         """
-        vérifie si deux états sont à distance d'un swap ou non
+        Checks if two grids can be swapped or not. 
+
+        Parameter: 
+        -----------
+        Another Grid of the same size.
+
+        Output:
+        -----------
+        Boolean
         """
+        #checks if it's the same grid
         if self==B:
             return True
+        #checks that the grids' sizes are the same
         assert(self.m==B.m and self.n==B.n)
+        #creates a list of all different points in the grids
         u=[]
         for i in range(self.m):
             for j in range(self.n):
                 if self.state[i][j] != B.state[i][j]:
                     u=u+[(i,j)]
+        #if there are more than two different points, grids can't be swapped.
         if len(u)>2:
             return False
+        #if there are 2 different points, we check that they can be swapped. 
         else:
             if abs(u[0][0]-u[1][0])+ abs(u[0][1]-u[1][1]) == 1:
                 return True
@@ -152,11 +172,16 @@ class Grid():
     
     def GridGraph(self):
         """
-        Crée un graph ou les sommets sont tous les swap puzzles possibles et dans 
-        lequel les sommets sont reliés si et seulement si ils sont échangeables
+        Creates a graph where the vertices are all the states possible for a grid of the same size, 
+        and where the edges link two swappable vertices.
+        
+        Output: 
+        -----------
+        Graph from Graph class
         """
         G = Graph()
         U =self.other_states()
+        #adds an edge every time two states can be swapped
         for i in range(len(U)):
             for j in range(len(U)):
                 if j > i and U[i].can_be_swapped(U[j]):
@@ -164,13 +189,18 @@ class Grid():
         return(G)
     
     def Reachable_states(self):
+        """
+        Returns a list of all the reachable states of the grid in one single swap. 
+        """
         U=[]
+        #adds all the horizontal swaps
         for i in range(self.m):
             for j in range(self.n -1):
                 self.swap((i,j),(i,j+1))
                 B=Grid(self.m, self.n, deepcopy(self.state))
                 U=U+ [B]
                 self.swap((i,j),(i,j+1))
+        #adds all the vertical swaps
         for j in range(self.n):
             for i in range(self.m - 1):
                 self.swap((i,j),(i+1,j))

@@ -2,12 +2,22 @@ from grid import Grid
 
 class Solver(): 
     """
-    A solver class, to be implemented.
+    A class that helps solving puzzles.
     """
     def trouve_pos_init(self, A, x):
         """
-        Trouve le nombre dans la grille et renvoie sa position
+        Finds one number in the grid and return its position
+
+        Parameters: 
+        -----------
+        (A,x) where A is a grid from the Grid class and x is the number to look for.
+
+        Output:
+        -----------
+        (i0,j0), the position of the number in the grid
+        
         """
+        assert (0<x<=A.n*A.m)
         i0, j0 =None,None
         for i in range(A.m):
             if x in A.state[i]:
@@ -18,13 +28,31 @@ class Solver():
     
     def trouve_pos_finale(self, A, x):
         """
-        Trouve la position finale du nombre dans la grille et renvoie les coordonnées de sa position finale
+        Finds the final position of a number in the grid
+
+        Parameters: 
+        -----------
+        (A,x) where A is a grid from the Grid class and x is the number to look for.
+
+        Output:
+        -----------
+        (i0,j0), the final position of the number in the grid
         """
+        assert (0<x<=A.n*A.m)
         return ((x-1)//A.n, (x-1) % A.n)
 
     def convertisseur(self,X):
         """
-        Transforme une liste de swap puzlles (swappables de proche en proche) en liste des swaps à effectuer
+        Transforms a list of swap puzzles in a lists of swaps.
+
+        Parameter: 
+        -----------
+        X = [X1, X2...], a list of grids of the same size where Xi can be swapped with Xi+1 in one single swap
+
+        Output:
+        -----------
+        returns the sequence of swaps at the format 
+        [((i1, j1), (i2, j2)), ((i1', j1'), (i2', j2')), ...].
         """
         v=[]
         for i in range(len(X)-1):
@@ -37,47 +65,85 @@ class Solver():
 
     def naif(self, A):
         """
-        Solves the grid and returns the sequence of swaps at the format 
-        [((i1, j1), (i2, j2)), ((i1', j1'), (i2', j2')), ...]. 
+        Solves a grid and returns a sequence of swaps. Grid is then set back to it's original state. 
+
+        Parameter: 
+        -----------
+        A, a Grid.
+
+        Output: 
+        -----------
+        returns the sequence of swaps at the format 
+        [((i1, j1), (i2, j2)), ((i1', j1'), (i2', j2')), ...].
         """
         v=[]
+        #for every number in the grid...
         for i in range(A.m * A.n):
             u=[]
+            #we find it's  current and final position
             deb=self.trouve_pos_init(A,i+1)
             fin=self.trouve_pos_finale(A,i+1)
+            #we first find the sequence of horizontal swaps, caring not to disrupt what has already been done
             if fin[1] > deb[1]:
                 for k in range(fin[1]-deb[1]):
                     u=u+[((deb[0], deb[1]+k), (deb[0], deb[1]+k+1))]
             elif fin[1] < deb[1]:
                 for k in range (deb[1]-fin[1]):
                     u=u+[((deb[0],deb[1]-k),(deb[0], deb[1]-k-1))]
+            #then the sequence of horizontal swaps
             if fin[0] < deb [0]:
                 for k in range (deb[0] - fin[0]):
                     u=u+[((deb[0] - k, fin[1]), (deb[0]-k-1, fin[1]))]
+            #we apply the sequence of horizontal and vertical swaps
             A.swap_seq(u)
+            #we register those swaps
             v=v+u
+        #we return the grid to its original state
         A.swap_seq(list(reversed(v)))
         return(v)
 
     def bfs_graph(self,A):
+        """
+        Solves a grid, by creating the graph of all it's possible sates and applying bfs to it 
+
+        Parameter: 
+        -----------
+        A, a Grid.
+
+        Output: 
+        -----------
+        path: list[Grid] | None
+            The shortest path from src to dst. Returns None if dst is not reachable from src
+        """
         G=A.GridGraph()
         dst=Grid(A.m,A.n)
         return(G.bfs(A,dst))
 
     def bfs_grid(self,A):
+        """
+        Solves a grid, by applying bfs to a graph that is progressively built.
+
+        Parameter: 
+        -----------
+        A, a Grid.
+
+        Output: 
+        -----------
+        path: list[Grid] | None
+            The shortest path from src to dst. Returns None if dst is not reachable from src
+        """
         dst=Grid(A.m,A.n)
-        # Initialisation de la file avec le nœud source et le chemin initial contenant uniquement le nœud source
+        # initiates the queue with the source node and the initial path(only the first node).
         queue = [(A, [A])]
-        # Boucle principale
         while queue:
-            # Retire le premier élément de la file (nœud actuel et chemin associé)
+            # Deletes the first element of the queue (node and associated path)
             current_node, path = queue.pop(0)
-            # Vérifie si le nœud actuel est la destination:
+            # Checks if the node is the final destination:
             if current_node == dst:            
-                return path # Retourne le premier chemin trouvé (le plus court)                       
-                # Explore les voisins du nœud actuel:            
+                return path # Returns the first path found (which is the shortest)
+                # Explore all neighbor nodes           
             for neighbor in current_node.Reachable_states():            
-            # Vérifie si le voisin n'est pas déjà présent dans le chemin           
+            # Checks if the neighbor is not already in the path          
                 if neighbor not in path:           
-                    # Ajoute le voisin à la file avec le chemin mis à jour          
+                    # Adds the neighbor to the queue with the actualized path         
                     queue.append((neighbor, path + [neighbor]))
