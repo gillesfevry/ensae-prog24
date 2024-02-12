@@ -11,12 +11,24 @@ from grid import Grid
 from graph import Graph
 from solver import Solver
 
+S=Solver()
+
 A=Grid(2,3,[[2,5,4],[1,3,6]])
 print(A)
-S=Solver()
+
 print("La méthode naive donne:")
 print(S.naif(A))
+A.swap_seq(S.naif(A))
+assert(A.is_sorted())
+
+A=Grid(2,3,[[2,5,4],[1,3,6]])
 print("La méthode bfs en construisant entièrement le graphe donne")
 print(S.convertisseur(S.bfs_graph(A)))
+A.swap_seq(S.convertisseur(S.bfs_graph(A)))
+assert(A.is_sorted())
+
+A=Grid(2,3,[[2,5,4],[1,3,6]])
 print("La méthode bfs en construisant progressivement le graphe donne:")
 print(S.convertisseur(S.bfs_grid(A)))
+A.swap_seq(S.convertisseur(S.bfs_grid(A)))
+assert(A.is_sorted())

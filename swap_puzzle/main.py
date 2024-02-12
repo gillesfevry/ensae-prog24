@@ -9,3 +9,15 @@ print(file_name)
 
 g = Grid.grid_from_file(file_name)
 print(g)
+
+print("debut")
+
+S = Solver()
+for i in S.bfs_heuristique(g, S.Heuristique_simple):
+    print(i)
+print("autre")
+for i in S.bfs_heuristique(g, S.Heuristique_euclidienne):
+    print(i)
+print("autre")
+for i in S.bfs_heuristique(g, S.Heuristique_naif):
+    print(i)
