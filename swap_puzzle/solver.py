@@ -17,13 +17,12 @@ class Solver():
         -----------
         (i0,j0), the position of the number in the grid
         """
-        assert (0 < x <= A.n * A.m)
         i0, j0 = None, None
         for i in range(A.m):
-            if x in A.state[i]:
-                j0 = A.state[i].index(x)
-                i0 = i
-                break
+            for j in range(A.n):
+                if x == A.state[i][j]:
+                    i0,j0=i,j
+                    break
         return (i0, j0)
 
     def trouve_pos_finale(self, A, x):
