@@ -24,7 +24,7 @@ class Grid():
         the number in the cell (i, j), i.e., in the i-th line and j-th column.
         Note: lines are numbered 0..m and columns are numbered 0..n.
     """
-    def __init__(self, m, n, initial_state=[]):
+    def __init__(self, m, n, initial_state=[], cout=0):
         """
         Initializes the grid.
 
@@ -42,6 +42,7 @@ class Grid():
         if not initial_state:
             initial_state = [list(range(i*n+1, (i+1)*n+1)) for i in range(m)]
         self.state = initial_state
+        self.cout = cout
 
     def __str__(self):
         """
@@ -69,6 +70,11 @@ class Grid():
         Permits testing A==B using A and B states as equality criterion.
         """
         return self.state == other.state
+    
+    def __lt__(self, other):
+        assert(self.m==other.m)
+        assert(self.n==other.n)
+        return self.state < other.state
 
     def is_sorted(self):
         """

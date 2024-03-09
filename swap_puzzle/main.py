@@ -1,23 +1,21 @@
 from grid import Grid
 from graph import Graph 
 from solver import Solver
+import matplotlib.pyplot as plt
 
-data_path = "input/"
-file_name = data_path + "grid2.in"
+#data_path = "input/"
+#file_name = data_path + "grid2.in"
 
-print(file_name)
+#print(file_name)
 
-g = Grid.grid_from_file(file_name)
-print(g)
+#g = Grid.grid_from_file(file_name)
+#print(g)
 
-print("debut")
+#print("debut")
 
-S = Solver()
-for i in S.bfs_heuristique(g, S.Heuristique_simple):
-    print(i)
-print("autre")
-for i in S.bfs_heuristique(g, S.Heuristique_euclidienne):
-    print(i)
-print("autre")
-for i in S.bfs_heuristique(g, S.Heuristique_naif):
-    print(i)
+S=Solver()
+A=Grid(3,3)
+A.Shuffle()
+
+print(len(S.bfs_heuristique(A, S.Heuristique_euclidienne)))
+print(len(S.A_star(A,S.Heuristique_euclidienne)))

@@ -9,7 +9,7 @@ Question 3:
 La méthode naïve de solver s'appelle "naif".
 Elle fait appel à deux méthodes qui permettent de trouver un numéro dans la grille, 
     ainsi que sa place finale ("trouve_pos_init" et "trouve_pos_finale")
-La méthode effectue dans le pire des cas moins de n*m*(n+m-2) swaps, pour une Grid(m,n).
+La méthode effectue dans le pire des cas n*m*(n+m-2) swaps, pour une Grid(m,n).
     Cela vient du fait qu'il faut déplacer m*n cases au maximum n-1 fois horizontalement et m-1 fois verticalement.
 La coût est de O((n*m)**2) opérations.
     En effet, pour chaque case, il faut  à chaque fois retrouver où elle se trouve dans la grille. 

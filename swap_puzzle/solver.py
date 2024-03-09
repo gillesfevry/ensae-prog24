@@ -1,5 +1,5 @@
 from grid import Grid
-
+import heapq
 
 class Solver():
     """
@@ -169,12 +169,14 @@ class Solver():
             for i in range(A[0].m*A[0].n):
                 x1, y1 = self.trouve_pos_init(A[0], i + 1)
                 x2, y2 = self.trouve_pos_finale(A[0], i + 1)
-                H = H + abs(x1 - x2) + abs(y1 - y2)
+                H = H + abs(x1 - x2) + abs(y1 - y2) 
+            H=H+ A[0].cout
         else:
             for i in range(A.m * A.n):
                 x1, y1 = self.trouve_pos_init(A, i + 1)
                 x2, y2 = self.trouve_pos_finale(A, i + 1)
                 H = H + abs(x1 - x2) + abs(y1 - y2)
+            H=H+ A.cout
         return H
 
     def Heuristique_simple(self, A):
@@ -195,41 +197,48 @@ class Solver():
         if type(A) is tuple:
             for i in range(A[0].m*A[0].n):
                 if self.trouve_pos_init(A[0], i+1) != self.trouve_pos_finale(A[0], i + 1):
-                    H = H + 1
+                    H = H + 1 
+            H = H + A[0].cout
         else:
             for i in range(A.m*A.n):
                 if self.trouve_pos_init(A, i+1) != self.trouve_pos_finale(A, i + 1):
-                    H = H + 1
+                    H = H + 1 
+            H = H + A.cout
         return H
 
-    def Heuristique_naif(self, A):
-        """
-        A heuristic defined by the length of the solution provided by naif
-
-        Parameter:
-        -----------
-        A, a Grid
-        or
-        (A, something), where A is a Grid
-
-        Output:
-        -----------
-        int
-        """
-        if type(A) is tuple:
-            H = len(self.naif(A[0]))
-        else:
-            H = len(self.naif(A))
-        return H
+    def A_star(self, A, Heuristique) :
+        dst = Grid(A.m, A.n)
+        # initiates the queue with the source node and the initial path(only the first node).
+        queue = [(Heuristique(A), (A, [A]))]
+        visited = []
+        while queue:
+            current_node, path = heapq.heappop(queue)[1]
+            # Checks if the node is the final destination:
+            if current_node == dst:
+                return path
+                # Returns the first path found (which is the shortest)
+                # Explore all neighbor nodes
+            for neighbor in current_node.Reachable_states():
+                # Checks if the neighbor is not already in the path
+                if neighbor not in visited:
+                    queue0= [queue[i][1][0] for i in range(len(queue))]
+                    if neighbor in queue0:
+                        neighbor_position = queue0.index(neighbor)
+                        if 0 < current_node.cout +1 < queue0[neighbor_position].cout: 
+                            queue.pop(neighbor_position)
+                            neighbor.cout = current_node.cout + 1
+                            heapq.heappush(queue, (Heuristique(neighbor), (neighbor, path + [neighbor])))
+                    else:
+                        neighbor.cout = current_node.cout +1
+                        heapq.heappush(queue, (Heuristique(neighbor), (neighbor, path + [neighbor])))
+            visited = visited + [current_node] 
 
     def bfs_heuristique(self, A, Heuristique):
         """
         Solves a grid, by applying A* with a certain heuristic to a progressively built graph.
-
         Parameter:
         -----------
         (A, Solver().Heur) where A is a Grid and Heur a heuristic
-
         Output:
         -----------
         path: list[Grid] | None
