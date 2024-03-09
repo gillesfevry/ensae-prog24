@@ -61,7 +61,7 @@ A=Grid(2,3,[[2,5,4],[1,3,6]])
 start = time.time()
 
 print("The A* method using the euclidian heuristic gives")
-print(S.convertisseur(S.bfs_heuristique(A, S.Heuristique_euclidienne)))
+print(S.convertisseur(S.A_star(A, S.Heuristique_euclidienne)))
 A.swap_seq(S.convertisseur(S.bfs_heuristique(A, S.Heuristique_euclidienne)))
 assert(A.is_sorted())
 end=time.time()
@@ -73,21 +73,8 @@ A=Grid(2,3,[[2,5,4],[1,3,6]])
 
 start = time.time()
 
-print("The A* method using the naif heuristic gives")
-print(S.convertisseur(S.bfs_heuristique(A, S.Heuristique_naif)))
-A.swap_seq(S.convertisseur(S.bfs_heuristique(A, S.Heuristique_naif)))
-assert(A.is_sorted())
-end=time.time()
-
-print("it took", 100*(end - start),"milliseconds")
-print(" ")
-
-A=Grid(2,3,[[2,5,4],[1,3,6]])
-
-start = time.time()
-
 print("The A* method using the simple heuristic gives")
-print(S.convertisseur(S.bfs_heuristique(A, S.Heuristique_simple)))
+print(S.convertisseur(S.A_star(A, S.Heuristique_simple)))
 A.swap_seq(S.convertisseur(S.bfs_heuristique(A, S.Heuristique_simple)))
 assert(A.is_sorted())
 end=time.time()
