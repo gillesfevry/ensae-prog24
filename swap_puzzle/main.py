@@ -20,3 +20,10 @@ A.Shuffle()
 print(len(S.bfs_heuristique(A, S.Heuristique_euclidienne)))
 print(len(S.A_star(A,S.Heuristique_euclidienne)))
 print(1+len(S.naif(A)))
+
+from grid import Grid
+A=Grid(3,3)
+A.Shuffle()
+A.Graphic_rep()
+for i in S.A_star(A, S.Heuristique_euclidienne):
+    i.Graphic_rep()

@@ -16,10 +16,10 @@ z=[]
 for i in range(10):
     print(i)
     A.Shuffle()
-    x = x + [len(S.A_star(A, S.Heuristique_euclidienne))]
+    x = x + [len(S.A_star(A, S.Heuristique_Manhattan))]
     y = y + [len(S.naif(A))+1]
-    z = z + [len(S.bfs_heuristique(A, S.Heuristique_euclidienne))]
-    if len(S.A_star(A, S.Heuristique_euclidienne)) > len(S.naif(A))+1:
+    z = z + [len(S.bfs_heuristique(A, S.Heuristique_Manhattan))]
+    if len(S.A_star(A, S.Heuristique_Manhattan)) > len(S.naif(A))+1:
         print(A)
 
 pente, intercept = np.polyfit(x, y, 1)

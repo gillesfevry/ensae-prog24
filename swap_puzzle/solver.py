@@ -149,7 +149,7 @@ class Solver():
                     # Adds the neighbor to the queue with the actualized path
                     queue.append((neighbor, path + [neighbor]))
 
-    def Heuristique_euclidienne(self, A):
+    def Heuristique_Manhattan(self, A):
         """
         A heuristic defined by the sum of every number's Manhattan distance to its final position.
 
