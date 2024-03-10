@@ -135,6 +135,7 @@ class Solver():
         dst = Grid(A.m, A.n)
         # initiates the queue with the source node and the initial path(only the first node).
         queue = [(A, [A])]
+        visited = []
         while queue:
             # Deletes the first element of the queue (node and associated path)
             current_node, path = queue.pop(0)
@@ -145,9 +146,10 @@ class Solver():
                 # Explore all neighbor nodes
             for neighbor in current_node.Reachable_states():
                 # Checks if the neighbor is not already in the path
-                if neighbor not in path:
+                if neighbor not in visited:
                     # Adds the neighbor to the queue with the actualized path
                     queue.append((neighbor, path + [neighbor]))
+            visited= visited + [current_node]
 
     def Heuristique_Manhattan(self, A):
         """
@@ -169,13 +171,13 @@ class Solver():
                 x1, y1 = self.trouve_pos_init(A[0], i + 1)
                 x2, y2 = self.trouve_pos_finale(A[0], i + 1)
                 H = H + abs(x1 - x2) + abs(y1 - y2) 
-            H=H+ A[0].cout
+            H = H/2 + A[0].cout
         else:
             for i in range(A.m * A.n):
                 x1, y1 = self.trouve_pos_init(A, i + 1)
                 x2, y2 = self.trouve_pos_finale(A, i + 1)
                 H = H + abs(x1 - x2) + abs(y1 - y2)
-            H=H+ A.cout
+            H = H/2 + A.cout
         return H
 
     def Heuristique_simple(self, A):
@@ -232,7 +234,7 @@ class Solver():
                         heapq.heappush(queue, (Heuristique(neighbor), (neighbor, path + [neighbor])))
             visited = visited + [current_node] 
 
-    def bfs_heuristique(self, A, Heuristique):
+    def compromis(self, A, Heuristique):
         """
         Solves a grid, by applying A* with a certain heuristic to a progressively built graph.
         Parameter:

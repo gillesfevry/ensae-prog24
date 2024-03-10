@@ -62,7 +62,7 @@ start = time.time()
 
 print("The A* method using the Manhattan heuristic gives")
 print(S.convertisseur(S.A_star(A, S.Heuristique_Manhattan)))
-A.swap_seq(S.convertisseur(S.bfs_heuristique(A, S.Heuristique_Manhattan)))
+A.swap_seq(S.convertisseur(S.A_star(A, S.Heuristique_Manhattan)))
 assert(A.is_sorted())
 end=time.time()
 
@@ -75,7 +75,7 @@ start = time.time()
 
 print("The A* method using the simple heuristic gives")
 print(S.convertisseur(S.A_star(A, S.Heuristique_simple)))
-A.swap_seq(S.convertisseur(S.bfs_heuristique(A, S.Heuristique_simple)))
+A.swap_seq(S.convertisseur(S.A_star(A, S.Heuristique_simple)))
 assert(A.is_sorted())
 end=time.time()
 
@@ -86,9 +86,9 @@ A=Grid(2,3,[[2,5,4],[1,3,6]])
 
 start = time.time()
 
-print("The Compromis method gives")
-print(S.convertisseur(S.bfs_heuristique(A, S.Heuristique_Manhattan)))
-A.swap_seq(S.convertisseur(S.bfs_heuristique(A, S.Heuristique_Manhattan)))
+print("The compromis method gives")
+print(S.convertisseur(S.compromis(A, S.Heuristique_Manhattan)))
+A.swap_seq(S.convertisseur(S.compromis(A, S.Heuristique_Manhattan)))
 assert(A.is_sorted())
 end=time.time()
 

@@ -18,7 +18,7 @@ for i in range(10):
     A.Shuffle()
     x = x + [len(S.A_star(A, S.Heuristique_Manhattan))]
     y = y + [len(S.naif(A))+1]
-    z = z + [len(S.bfs_heuristique(A, S.Heuristique_Manhattan))]
+    z = z + [len(S.compromis(A, S.Heuristique_Manhattan))]
     if len(S.A_star(A, S.Heuristique_Manhattan)) > len(S.naif(A))+1:
         print(A)
 
