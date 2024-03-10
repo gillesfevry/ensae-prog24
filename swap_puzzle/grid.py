@@ -131,7 +131,7 @@ class Grid():
 
     def Shuffle(self):
         """
-        Shuffles the grid.
+        Randomly shuffles the grid.
         """
         V = [i + 1 for i in range(self.m * self.n)]
         random.shuffle(V)

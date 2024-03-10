@@ -153,7 +153,7 @@ class Solver():
 
     def Heuristique_Manhattan(self, A):
         """
-        A heuristic defined by the sum of every number's Manhattan distance to its final position.
+        A heuristic defined by the sum of every number's Manhattan distance to its final position plus the grid's existing cost
 
         Parameter:
         -----------
@@ -182,7 +182,7 @@ class Solver():
 
     def Heuristique_simple(self, A):
         """
-        A heuristic defined by counting the number of numbers which are not at the right place
+        A heuristic defined by counting the number of numbers which are not at the right place plus the Grid's existing cost
 
         Parameter:
         -----------
@@ -197,33 +197,28 @@ class Solver():
         H = 0
         if type(A) is tuple:
             for i in range(A[0].m*A[0].n):
-                if self.trouve_pos_init(A[0], i+1) != self.trouve_pos_finale(A[0], i + 1):
+                if self.trouve_pos_init(A[0], i+1) != self.trouve_pos_finale(A[0], i + 1):#checks if the cell is at the right position
                     H = H + 1 
             H = H + A[0].cout
         else:
             for i in range(A.m*A.n):
-                if self.trouve_pos_init(A, i+1) != self.trouve_pos_finale(A, i + 1):
+                if self.trouve_pos_init(A, i+1) != self.trouve_pos_finale(A, i + 1):#checks if the cell is at the right position
                     H = H + 1 
             H = H + A.cout
         return H
 
     def A_star(self, A, Heuristique) :
         dst = Grid(A.m, A.n)
-        # initiates the queue with the source node and the initial path(only the first node).
-        queue = [(Heuristique(A), (A, [A]))]
+        queue = [(Heuristique(A), (A, [A]))]# initiates the queue with the source node and the initial path(only the first node).
         visited = []
         while queue:
             current_node, path = heapq.heappop(queue)[1]
-            # Checks if the node is the final destination:
-            if current_node == dst:
-                return path
-                # Returns the first path found (which is the shortest)
-                # Explore all neighbor nodes
-            for neighbor in current_node.Reachable_states():
-                # Checks if the neighbor is not already in the path
-                if neighbor not in visited:
-                    queue0= [queue[i][1][0] for i in range(len(queue))]
-                    if neighbor in queue0:
+            if current_node == dst:# Checks if the node is the final destination:
+                return path # Returns the first path found (which is the shortest)
+            for neighbor in current_node.Reachable_states(): # Explore all neighbor nodes
+                if neighbor not in visited: # Checks if the neighbor has already been visited
+                    queue0= [queue[i][1][0] for i in range(len(queue))] # makes a copy only containing nodes
+                    if neighbor in queue0:#checks if it is not already present with a lower cost
                         neighbor_position = queue0.index(neighbor)
                         if 0 < current_node.cout +1 < queue0[neighbor_position].cout: 
                             queue.pop(neighbor_position)
@@ -231,7 +226,7 @@ class Solver():
                             heapq.heappush(queue, (Heuristique(neighbor), (neighbor, path + [neighbor])))
                     else:
                         neighbor.cout = current_node.cout +1
-                        heapq.heappush(queue, (Heuristique(neighbor), (neighbor, path + [neighbor])))
+                        heapq.heappush(queue, (Heuristique(neighbor), (neighbor, path + [neighbor]))) #adds the neighbor to the list
             visited = visited + [current_node] 
 
     def compromis(self, A, Heuristique):
@@ -259,7 +254,7 @@ class Solver():
                 # Returns the first path found (which is the shortest)
                 # Explore all neighbor nodes
             for neighbor in current_node.Reachable_states():
-                # Checks if the neighbor is not already in the path
+                # Checks if the neighbor has already been visited
                 if neighbor not in visited:
                     # Adds the neighbor to the queue with the actualized path
                     queue.append((neighbor, path + [neighbor]))

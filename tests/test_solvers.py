@@ -1,5 +1,5 @@
 # This will work if ran from the root folder ensae-prog24
-# Ce test vise à vérifier sur un exemple que la technique du TD2 fonctionne bien
+# This test verifies that different algorithms do work fine
 
 import sys 
 import time

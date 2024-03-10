@@ -1,3 +1,5 @@
+#this program creates a chart that compares the length of the solutions brought by different algorithms
+
 from solver import Solver 
 from grid import Grid  
 
@@ -38,7 +40,7 @@ plt.text(min(x), min(t)-1, 'A_star', verticalalignment='bottom', horizontalalign
 plt.text(max(x), int(pente*100)/100 * max(x) + int(intercept*100)/100 , f'y={int(pente*100)/100} x + {int(intercept*100)/100}', verticalalignment='bottom', horizontalalignment='right', color='green')
 
 plt.plot(x, x, color='black')
-plt.text(min(x)+1, min(x), 'A*', verticalalignment='bottom', horizontalalignment='right', color='black')
+plt.text(min(x)+4, min(x), 'Heuristique de Manhattan', verticalalignment='bottom', horizontalalignment='right', color='black')
 plt.text(max(x), max(x)-1, f'y=x', verticalalignment='bottom', horizontalalignment='right', color='black')
 
 plt.title("Comparaison de différents algorithmes pour 100 grilles 3x3:")

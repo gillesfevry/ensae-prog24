@@ -108,7 +108,7 @@ class Graph:
                     return path # Returns the first path found (which is the shortest)
                 # Explore all neighbor nodes
                 for neighbor in self.graph[current_node]:
-                # Checks if the neighbor is not already in the path
+                # Checks if the neighbor has not already been visited
                     if neighbor not in visited:
                     # Adds the neighbor to the queue with the actualized path
                         queue.append((neighbor, path + [neighbor]))

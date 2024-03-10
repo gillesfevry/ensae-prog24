@@ -1,4 +1,5 @@
 # This will work if ran from the root folder ensae-prog24
+# This test verifies that bfs works
 
 import sys
 sys.path.append("swap_puzzle/")
