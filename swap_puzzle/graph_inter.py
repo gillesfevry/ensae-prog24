@@ -2,7 +2,8 @@ import pygame
 import sys
 from grid import Grid
 pygame.init()
-gride= ride= Grid(2,3 , [[1, 2,5], [4,3,6]])
+gride= Grid(3,3)
+gride.Shuffle()
 rows, cols = len(gride.state), len(gride.state[0])
 tile_size = 100
 
@@ -13,6 +14,8 @@ selected_color = (255, 0, 0)  # Couleur pour indiquer la case sélectionnée
 window_size = (cols * tile_size, rows * tile_size)
 screen = pygame.display.set_mode(window_size)
 pygame.display.set_caption('Jeu de Puzzle')
+
+swapnb=0
 
 def draw_grid(grid, selected):
     for i in range(len(grid.state)):
@@ -62,12 +65,28 @@ while True:
                     # Déplace la case sélectionnée vers la case cliquée si le déplacement est valide
                     if is_valid_move(selected_tile, clicked_position):
                         swap(puzzle_grid, selected_tile[0], selected_tile[1], clicked_position[0], clicked_position[1])
+                        swapnb+=1
                     selected_tile = None
 
     # Dessine la grille
     draw_grid(puzzle_grid, selected_tile)
     pygame.display.flip()
     if gride.is_sorted():
-        print("Félicitations ! Vous avez résolu le puzzle.")
+        
+        start_time = pygame.time.get_ticks()
+        elapsed_time = 0
+        
+        screen = pygame.display.set_mode(window_size)
+        pygame.display.set_caption("Félicitations !")
+        
+        font = pygame.font.Font(None, 36)
+        text = font.render(f"Félicitations ! {swapnb} coups", True, "white")
+        text_rect = text.get_rect()
+        text_rect.center = (window_size[0] // 2, window_size[1] // 2)
+        
+        while  elapsed_time - pygame.time.get_ticks() < 5000:
+            elapsed_time = pygame.time.get_ticks()
+            screen.blit(text, text_rect)
+            pygame.display.flip()
         pygame.quit()
         sys.exit()

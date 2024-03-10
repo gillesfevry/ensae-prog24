@@ -248,6 +248,7 @@ class Solver():
         dst = Grid(A.m, A.n)
         # initiates the queue with the source node and the initial path(only the first node).
         queue = [(A, [A])]
+        visited = []
         while queue:
             queue = sorted(queue, key=Heuristique)
             # Deletes the first element of the queue (node and associated path)
@@ -259,6 +260,7 @@ class Solver():
                 # Explore all neighbor nodes
             for neighbor in current_node.Reachable_states():
                 # Checks if the neighbor is not already in the path
-                if neighbor not in path:
+                if neighbor not in visited:
                     # Adds the neighbor to the queue with the actualized path
                     queue.append((neighbor, path + [neighbor]))
+            visited = visited + [current_node]
