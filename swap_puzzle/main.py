@@ -2,6 +2,7 @@ from grid import Grid
 from graph import Graph 
 from solver import Solver
 import matplotlib.pyplot as plt
+import time
 
 #data_path = "input/"
 #file_name = data_path + "grid2.in"

@@ -82,35 +82,37 @@ class Graph:
         self.edges.append((node1, node2))
 
     def bfs(self, src, dst): 
-        """
-        Finds a shortest path from src to dst by BFS.  
+            """
+            Finds a shortest path from src to dst by BFS.  
 
-        Parameters: 
-        -----------
-        src: NodeType
-            The source node.
-        dst: NodeType
-            The destination node.
+            Parameters: 
+            -----------
+            src: NodeType
+                The source node.
+            dst: NodeType
+                The destination node.
 
-        Output: 
-        -------
-        path: list[NodeType] | None
-            The shortest path from src to dst. Returns None if dst is not reachable from src
-        """ 
-        # initiates the queue with the source node and the initial path(only the first node).
-        queue = [(src, [src])]
-        while queue:
-            # Deletes the first element of the queue (node and associated path)
-            current_node, path = queue.pop(0)
-            # Checks if the node is the final destination:
-            if current_node == dst:
-                return path # Returns the first path found (which is the shortest)
-             # Explore all neighbor nodes
-            for neighbor in self.graph[current_node]:
-            # Checks if the neighbor is not already in the path
-                if neighbor not in path:
-                 # Adds the neighbor to the queue with the actualized path
-                    queue.append((neighbor, path + [neighbor]))
+            Output: 
+            -------
+            path: list[NodeType] | None
+                The shortest path from src to dst. Returns None if dst is not reachable from src
+            """ 
+            # initiates the queue with the source node and the initial path(only the first node).
+            queue = [(src, [src])]
+            visited = []
+            while queue:
+                # Deletes the first element of the queue (node and associated path)
+                current_node, path = queue.pop(0)
+                # Checks if the node is the final destination:
+                if current_node == dst:
+                    return path # Returns the first path found (which is the shortest)
+                # Explore all neighbor nodes
+                for neighbor in self.graph[current_node]:
+                # Checks if the neighbor is not already in the path
+                    if neighbor not in visited:
+                    # Adds the neighbor to the queue with the actualized path
+                        queue.append((neighbor, path + [neighbor]))
+                visited = visited + [current_node]
 
     @classmethod
     def graph_from_file(cls, file_name):
